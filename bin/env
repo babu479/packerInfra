@@ -1,0 +1,33 @@
+#!/bin/bash -e
+read -p "Enter the VPC region: " vpcregion
+read -p "Enter the VPC ID: " vpcid
+read -p "Enter the VPC public subnet ID: " vpcpublicsnid
+read -p "Enter the VPC public SecurityGroup:" vpcpublicsgid
+read -p "Enter the Source AMI ID:" sourceAmi
+read -p "Enter the AWS ACCESS KEY:" AWS_ACCESS_KEY_ID
+read -p "Enter the AWS SECRET KEY:" AWS_SECRET_ACCESS_KEY
+read -p "Enter the AMI NAME:" amiName
+read -p "Enter the Instance type:" instancetype
+read -p "Enter the default username of Source AMI:" sshusername
+
+export vpc_region="${vpcregion}"
+export vpc_id="${vpcid}"
+export vpc_public_sn_id="${vpcpublicsnid}"
+export vpc_public_sg_id="${vpcpublicsgid}"
+export source_Ami="${sourceAmi}"
+export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
+export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
+export ami_Name="${amiName}"
+export instance_type="${instancetype}"
+export ssh_username="${sshusername}"
+
+echo "${vpc_region}"
+echo "${vpc_id}"
+echo "${vpc_public_sn_id}"
+echo "${vpc_public_sg_id}"
+echo "${sourceAmi}"
+echo "${AWS_ACCESS_KEY_ID}"
+echo "${AWS_SECRET_ACCESS_KEY}"
+echo "${amiName}"
+echo "${instance_type}"
+echo "${ssh_username}"

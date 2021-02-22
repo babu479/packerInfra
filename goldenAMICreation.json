@@ -1,0 +1,63 @@
+{
+    "variables": {
+        "vpc_region": "",
+        "vpc_id": "",
+        "vpc_public_sn_id": "",
+        "vpc_public_sg_id": "",
+        "source_ami": "",
+        "instance_type": "",
+        "ssh_username": "",
+        "aws_access_key": "",
+        "aws_secret_key": "",
+        "ami_name": "",
+        "ami_description": ""
+
+    },
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "profile": "default",
+            "region": "{{user `vpc_region`}}",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `vpc_public_sn_id`}}",
+            "associate_public_ip_address": true,
+            "security_group_id": "{{user `vpc_public_sg_id`}}",
+            "access_key": "{{user `aws_access_key`}}",
+            "secret_key": "{{user `aws_secret_key`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "source_ami": "{{user `source_ami`}}",
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_timeout": "15m",
+            "ami_name":"{{user `ami_name`}}-{{isotime | clean_resource_name}}",
+            "ami_description": "{{user `ami_description`}}",
+            "run_tags": {
+                "Name": "ci-build-{{user `ami_name`}}"
+            },
+            "tags": {
+                "Name": "ci-build-{{user `ami_name`}}"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sleep 60",
+                "curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -",
+                "sudo yum -y install nodejs",
+                "sudo yum -y install java-1.8.0-openjdk-devel",
+                "sudo yum -y groupinstall 'Development Tools'",
+                "sudo curl -o Python-3.4.3.tar.xz  https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz",
+                "sudo tar xf Python-3.*",
+                "cd Python-3.* && sudo ./configure && sudo make && sudo make install",
+                "sudo curl -o datadog-agent-7.25.1-1.x86_64.rpm  https://s3.amazonaws.com/yum.datadoghq.com/stable/7/x86_64/datadog-agent-7.25.1-1.x86_64.rpm", 
+
+                "sudo yum -y localinstall datadog-agent-*.rpm"
+            ]
+        },
+       {
+          "type": "ansible",
+          "playbook_file": "./ansible/playbook.yml"
+       }
+    ]
+}
