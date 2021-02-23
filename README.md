@@ -6,10 +6,7 @@
 
 ## Terraform
 ### Command to run main Terraform
-## Go in folder terraform, run command:
-
-## terraform init
-
-## terraform plan
-
-## terraform apply
+# Go in folder terraform, run command:
+ terraform init
+ terraform plan
+ terraform apply
